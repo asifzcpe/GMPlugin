@@ -1,0 +1,28 @@
+<style type="text/css">
+	#map{
+		height: 100%;
+	}
+</style>
+<div id="map"></div>
+<script type="text/javascript" src="GMPlugin.js"></script>
+<script type="text/javascript">
+ function initMap() {
+        // Create a map object and specify the DOM element for display.
+        var obj={
+        	'mapID'		:'map',
+        	'lat'		:23.8103,
+        	'lng'		:90.4125,
+        	'zoomLevel'	:15,
+
+        };
+       var map=new GMPlugin(obj);
+       map.changeMapCenter(22.8456, 89.5403);
+       // map.centerCurrentLocation();
+       // map.centerCurrentLocationWithMarker();
+       // map.centerCurrentLocationWithMarker();
+       map.makeSingleMarkerTextAddress("khulna");
+       
+      }
+
+</script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAFUh9RdWMgjRnmzuy4dtNZMCK9eEofnM0&libraries=places&callback=initMap" async defer></script>
