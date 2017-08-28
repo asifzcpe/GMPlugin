@@ -58,9 +58,10 @@
 			console.warn("Sorry, current location can not be centered because your browser does not support geolocation");
 		}
 	}
-	GMPlugin.prototype.makeSingleMarkerTextAddress=function(textAddress){
+	GMPlugin.prototype.makeSingleMarkerTextAddress=function(textAddress,icon){
 		thisGeocoder=this.geocoder;
 		thisMap=this.map;
+		singleMarker=this.markerArray;
 		var marker={};
 		if(textAddress=='' || textAddress=='undefined')
 		{
@@ -78,9 +79,10 @@
 					marker=new google.maps.Marker({
 						position:latLng,
 						title:textAddress,
-						icon:google.maps.SymbolPath.CIRCLE
+						icon:(icon=='' || icon=='undefined' ||icon==null)?google.maps.SymbolPath.CIRCLE:icon
 					});
 					marker.setMap(thisMap);
+					singleMarker.push(marker);
 
 				}
 				else
@@ -89,5 +91,42 @@
 				}
 			});
 		}
+	}
+
+	GMPlugin.prototype.mapZoomLevel=function(zoomLevel){
+		this.map.setZoom(zoomLevel);
+	}
+
+	GMPlugin.prototype.directionRoute=function(params){
+		directionMap=this.map;
+		var directionsDisplay = new google.maps.DirectionsRenderer({
+    								suppressMarkers: true,
+    								polylineOptions: {
+								       strokeColor:"#19196F",
+								       strokeWeight: 7
+								    },
+								    preserveViewport: false
+    							});
+    	var directionsService = new google.maps.DirectionsService();
+
+		var request = {
+	      origin: "mirpur 11",
+	      destination: "dhanmondi",
+	      optimizeWaypoints: true,
+	      travelMode: 'DRIVING',
+	      unitSystem: google.maps.UnitSystem.METRIC
+
+	    };
+	    directionsService.route(request, function(response, status) {
+	      if (status == google.maps.DirectionsStatus.OK) 
+	      {
+	        directionsDisplay.setDirections(response);
+	        directionsDisplay.setMap(directionMap);
+	      } 
+	      else 
+	      {
+	        console.log("Directions Request from " + start + " to " + end+ " failed: " + status);
+	      }
+	    });
 	}
 }());
