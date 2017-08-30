@@ -1,3 +1,4 @@
+/*! GMPlugin v1.0.0 | (c) Md. Asif Rahman */
 (function(){
 	this.GMPlugin=function(params){
 		this.map=new google.maps.Map(document.getElementById(params['mapID']),{
@@ -8,6 +9,9 @@
 		});
 		this.markerArray=[];
 		this.geocoder=new google.maps.Geocoder();
+		this.infowindow = new google.maps.InfoWindow({
+
+  		});
 	}
 	GMPlugin.prototype.changeMapCenter=function(lat,lng){
 		if(lat=="" || lat=='undefined'){
@@ -99,21 +103,22 @@
 
 	GMPlugin.prototype.directionRoute=function(params){
 		directionMap=this.map;
+		infowindow=this.infowindow;
 		var directionsDisplay = new google.maps.DirectionsRenderer({
-    								suppressMarkers: true,
+    								suppressMarkers: (typeof params['pointer']=='undefined')?false:params['pointer'],
     								polylineOptions: {
-								       strokeColor:"#19196F",
-								       strokeWeight: 7
+								       strokeColor:(typeof params['routeColor']=='undefined')?'#19196F':params['routeColor'],
+								       strokeWeight:(typeof params['routeWeight']=='undefined')?7:params['routeWeight'], 
 								    },
 								    preserveViewport: false
     							});
     	var directionsService = new google.maps.DirectionsService();
 
 		var request = {
-	      origin: "mirpur 11",
-	      destination: "dhanmondi",
+	      origin: (typeof params['origin']=='undefined')?'Dhaka':params['origin'],
+	      destination:(typeof params['destination']=='undefined')?'Tangaile':params['destination'],
 	      optimizeWaypoints: true,
-	      travelMode: 'DRIVING',
+	      travelMode:(typeof params['travelMode']=='undefined')?'DRIVING':params['travelMode'],
 	      unitSystem: google.maps.UnitSystem.METRIC
 
 	    };
@@ -122,10 +127,15 @@
 	      {
 	        directionsDisplay.setDirections(response);
 	        directionsDisplay.setMap(directionMap);
+	        //to set infowindow content
+	          var step =10;
+		      infowindow.setContent(response.routes[0].legs[0].distance.text + "<br>" + response.routes[0].legs[0].duration.text + " ");
+		      infowindow.setPosition(response.routes[0].legs[0].steps[step].end_location);
+		      infowindow.open(directionMap);
 	      } 
 	      else 
 	      {
-	        console.log("Directions Request from " + start + " to " + end+ " failed: " + status);
+	        console.error("Directions Request from " + params['origin'] + " to " + params['destination']+ " failed: " + status);
 	      }
 	    });
 	}
