@@ -12,7 +12,18 @@ Next, you must insert the script for google map api like following
 This link should have in the footer section
 YOURAPIKEY=google map api key that you have registerd through your gmail account
 YOURINITMETHOD=your initialized method under which you write GMPlugin code
-## Usage
+### Usage
+##Initialize map
+```sh
+<style type="text/css">
+#map{
+height: 100%;
+}
+</style>
+```
+```sh
+<div id="map"></div>
+```
 
 
 ## Contributing
