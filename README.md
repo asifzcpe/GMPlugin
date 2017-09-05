@@ -48,6 +48,15 @@ map.changeMapCenter(22.8456, 89.5403);
 ```sh
 map.centerCurrentLocation();
 ```
+##Point the current location with marker and custom title
+```sh
+map.centerCurrentLocationWithMarker(yourTitle,yourIcon);//if no parameter passed; it will take the default icon and title
+```
+
+##To set a marker on the basis of textual address like Dhaka, Khulna etc..
+```sh
+map.makeSingleMarkerTextAddress("Dhaka",yourIcon);
+```
 
 ## Contributing
 
