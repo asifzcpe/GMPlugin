@@ -41,28 +41,41 @@
 			console.warn("Sorry, current location can not be centered because your browser does not support geolocation");
 		}
 	}
-	GMPlugin.prototype.centerCurrentLocationWithMarker=function(title,icon){
+	GMPlugin.prototype.centerCurrentLocationWithMarker=function(title,icon,draggable,latTxt,lngTxt){
 		centerMapWithMarker=this.map;
 		centerMarker=this.markerArray;
 		currentLocationMarker={};
 		if (navigator.geolocation) {
 		     navigator.geolocation.getCurrentPosition(function (position) {
-		         latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-		         centerMapWithMarker.setCenter(latLng);
-		         currentLocationMarker=new google.maps.Marker({
+		        latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+		        centerMapWithMarker.setCenter(latLng);
+		        currentLocationMarker=new google.maps.Marker({
+		         	draggable:(typeof draggable=='undefined')?false:true,
 		         	position:latLng,
 		         	title: (title=='' || title=='undefined')?'Dummy Title':title,
 		         	icon: (icon=="" || icon=='undefined')?google.maps.SymbolPath.CIRCLE:icon,
-		         });
-		         currentLocationMarker.setMap(centerMapWithMarker);
-		         centerMarker.push(currentLocationMarker); 
+		        });
+		        currentLocationMarker.setMap(centerMapWithMarker);
+		        centerMarker.push(currentLocationMarker); 
+		        //to drag event of marker
+		        currentLocationMarker.addListener('dragend',function(event){
+		     		if(typeof latTxt!='undefined' && typeof lngTxt!='undefined'){
+		     			document.getElementById(latTxt).value=event.latLng.lat();
+		     			document.getElementById(lngTxt).value=event.latLng.lng();
+		     		}
+		     		else{
+		     			console.warn("Please provide latitude text field id and langitude text field id");
+		     		}
+		     	});
 		     });
+
+
 	 	}
 		else{
 			console.warn("Sorry, current location can not be centered because your browser does not support geolocation");
 		}
 	}
-	GMPlugin.prototype.makeSingleMarkerTextAddress=function(textAddress,icon){
+	GMPlugin.prototype.makeSingleMarkerTextAddress=function(textAddress,icon,latTxt,lngTxt){
 		thisGeocoder=this.geocoder;
 		thisMap=this.map;
 		singleMarker=this.markerArray;
@@ -78,15 +91,32 @@
 				{
 					var mapLat=results[0].geometry.location.lat();
 					var mapLng=results[0].geometry.location.lng();
+					document.getElementById(latTxt).value=mapLat;
+			     	document.getElementById(lngTxt).value=mapLng;
 					var latLng=new google.maps.LatLng(mapLat,mapLng);
 					thisMap.setCenter(latLng);
 					marker=new google.maps.Marker({
 						position:latLng,
+						draggable:true,
 						title:textAddress,
 						icon:(icon=='' || icon=='undefined' ||icon==null)?google.maps.SymbolPath.CIRCLE:icon
 					});
+					for (var i = 0; i < singleMarker.length; i++) {
+          				singleMarker[i].setMap(null);
+        			}
 					marker.setMap(thisMap);
 					singleMarker.push(marker);
+
+					//to drag event of marker
+			        marker.addListener('dragend',function(event){
+			     		if(typeof latTxt!='undefined' && typeof lngTxt!='undefined'){
+			     			document.getElementById(latTxt).value=event.latLng.lat();
+			     			document.getElementById(lngTxt).value=event.latLng.lng();
+			     		}
+			     		else{
+			     			console.warn("Please provide latitude text field id and langitude text field id");
+			     		}
+			     	});
 
 				}
 				else
