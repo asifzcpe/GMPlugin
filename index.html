@@ -3,6 +3,7 @@
 		height: 100%;
 	}
 </style>
+<input type="text" name="auto" id="auto">
 <div id="map"></div>
 <script type="text/javascript" src="GMPlugin.js"></script>
 <script type="text/javascript">
@@ -17,6 +18,8 @@
         };
        var map=new GMPlugin(obj);
        map.changeMapCenter(22.8456, 89.5403);
+       map.addressAutoComplete("auto");
+       map.autocompleteMapMarker("auto");
        // map.centerCurrentLocation();
        // map.centerCurrentLocationWithMarker();
        // map.centerCurrentLocationWithMarker();
@@ -27,4 +30,4 @@
       }
 
 </script>
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=YOURAPIKEY&libraries=places&callback=initMap" async defer></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAFUh9RdWMgjRnmzuy4dtNZMCK9eEofnM0&libraries=places&callback=initMap" async defer></script>

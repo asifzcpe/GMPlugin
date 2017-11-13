@@ -75,6 +75,27 @@
 			console.warn("Sorry, current location can not be centered because your browser does not support geolocation");
 		}
 	}
+
+	GMPlugin.prototype.addressAutoComplete=function(txtControlId){
+		if(typeof txtControlId!='undefined'){
+			txtControlId=document.getElementById(txtControlId);
+			return new google.maps.places.Autocomplete(txtControlId);
+		}
+		else{
+			console.error("please provide txtbox id to wich you wnat to bind auto complete");
+		}
+	}
+	GMPlugin.prototype.autocompleteMapMarker=function(txtControlId){
+		var autoCompleteChangedControl=this.addressAutoComplete(txtControlId);
+		var thisGeocoder=this.geocoder;
+		var thisMap=this.map;
+		var address=document.getElementById(txtControlId);
+		var that=this;
+		google.maps.event.addListener(autoCompleteChangedControl,"place_changed",function(){
+			that.makeSingleMarkerTextAddress(address.value);
+			that.mapZoomLevel(13);
+		});
+	}
 	GMPlugin.prototype.makeSingleMarkerTextAddress=function(textAddress,icon,latTxt,lngTxt){
 		thisGeocoder=this.geocoder;
 		thisMap=this.map;
@@ -91,8 +112,12 @@
 				{
 					var mapLat=results[0].geometry.location.lat();
 					var mapLng=results[0].geometry.location.lng();
-					document.getElementById(latTxt).value=mapLat;
-			     	document.getElementById(lngTxt).value=mapLng;
+					if(typeof latTxt!='undefined'){
+						document.getElementById(latTxt).value=mapLat;
+					}
+					if(typeof lngTxt!='undefined'){
+						document.getElementById(lngTxt).value=mapLng;
+					}
 					var latLng=new google.maps.LatLng(mapLat,mapLng);
 					thisMap.setCenter(latLng);
 					marker=new google.maps.Marker({
