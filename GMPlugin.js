@@ -86,7 +86,7 @@
 		}
 	}
 
-	GMPlugin.prototype.getZipCode=function(txtControlId){
+	GMPlugin.prototype.getZipCode=function(txtControlId,zipcodeTxtId){
 		
 		    var autoCompleteChangedControl=this.addressAutoComplete(txtControlId);
 		    var that=this;
@@ -96,7 +96,7 @@
 			            if (results[0]) {
 			                for (j = 0; j < results[0].address_components.length; j++) {
 			                    if (results[0].address_components[j].types[0] == 'postal_code')
-			                        return results[0].address_components[j].short_name;
+			                        document.getElementById(zipcodeTxtId).value=results[0].address_components[j].short_name;
 			                }
 			            }
 			        } else {

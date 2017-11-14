@@ -4,6 +4,7 @@
 	}
 </style>
 <input type="text" name="auto" id="auto">
+<input type="text" name="zip" id="zip">
 <div id="map"></div>
 <script type="text/javascript" src="GMPlugin.js"></script>
 <script type="text/javascript">
@@ -20,7 +21,7 @@
        map.changeMapCenter(22.8456, 89.5403);
        map.addressAutoComplete("auto");
        map.autocompleteMapMarker("auto");
-       map.getZipCode("auto");
+       map.getZipCode("auto","zip");
        // map.centerCurrentLocation();
        // map.centerCurrentLocationWithMarker();
        // map.centerCurrentLocationWithMarker();
