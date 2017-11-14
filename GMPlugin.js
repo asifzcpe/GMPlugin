@@ -85,14 +85,14 @@
 			console.error("please provide txtbox id to wich you wnat to bind auto complete");
 		}
 	}
-	GMPlugin.prototype.autocompleteMapMarker=function(txtControlId){
+	GMPlugin.prototype.autocompleteMapMarker=function(txtControlId,latTxt,lngTxt){
 		var autoCompleteChangedControl=this.addressAutoComplete(txtControlId);
 		var thisGeocoder=this.geocoder;
 		var thisMap=this.map;
 		var address=document.getElementById(txtControlId);
 		var that=this;
 		google.maps.event.addListener(autoCompleteChangedControl,"place_changed",function(){
-			that.makeSingleMarkerTextAddress(address.value);
+			that.makeSingleMarkerTextAddress(address.value,latTxt,lngTxt);
 			that.mapZoomLevel(13);
 		});
 	}
