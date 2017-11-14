@@ -85,6 +85,26 @@
 			console.error("please provide txtbox id to wich you wnat to bind auto complete");
 		}
 	}
+
+	GMPlugin.prototype.getZipCode=function(txtControlId){
+		
+		    var autoCompleteChangedControl=this.addressAutoComplete(txtControlId);
+		    var that=this;
+		    google.maps.event.addListener(autoCompleteChangedControl,"place_changed",function(){
+				that.geocoder.geocode({'address':document.getElementById(txtControlId).value}, function(results, status) {
+			        if (status == google.maps.GeocoderStatus.OK) {
+			            if (results[0]) {
+			                for (j = 0; j < results[0].address_components.length; j++) {
+			                    if (results[0].address_components[j].types[0] == 'postal_code')
+			                        return results[0].address_components[j].short_name;
+			                }
+			            }
+			        } else {
+			            console.warn("Geocoder failed due to: " + status);
+			        }
+		    	});
+			});
+	}
 	GMPlugin.prototype.autocompleteMapMarker=function(txtControlId,latTxt,lngTxt){
 		var autoCompleteChangedControl=this.addressAutoComplete(txtControlId);
 		var thisGeocoder=this.geocoder;
