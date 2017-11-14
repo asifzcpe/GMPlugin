@@ -112,7 +112,7 @@
 		var address=document.getElementById(txtControlId);
 		var that=this;
 		google.maps.event.addListener(autoCompleteChangedControl,"place_changed",function(){
-			that.makeSingleMarkerTextAddress(address.value,latTxt,lngTxt);
+			that.makeSingleMarkerTextAddress(address.value,'',latTxt,lngTxt);
 			that.mapZoomLevel(13);
 		});
 	}
